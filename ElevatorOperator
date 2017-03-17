@@ -1,0 +1,53 @@
+
+public class ElevatorOperator extends Thread{
+
+	Elevator elevator;
+	 
+	 public ElevatorOperator(int numFloors){
+		 elevator = new Elevator(numFloors);
+	 }
+	 
+	    public void startEngine(){
+	        this.start();
+	    }
+	     
+	    public void run(){
+	        while(true){
+	            if(elevator.requests.isEmpty()){                   
+	                    break;
+	            }
+	            Integer next = elevator.gotoNext();
+	            System.out.println("Next floor is "+next);
+	             
+	            try {
+	                Thread.sleep(1000);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	     
+	    public void pressButton(int floor){
+	        System.out.println("Pressed "+floor);
+	        elevator.requests.add(floor);
+	    }
+	    
+	    public static void main(String[] args) {
+	    	ElevatorOperator engine = new ElevatorOperator(10);
+	        engine.startEngine();
+	         
+	        engine.pressButton(1);
+	        engine.pressButton(5);
+	        engine.pressButton(6);
+	        engine.pressButton(1);
+	        engine.pressButton(4);
+	        engine.pressButton(2);
+	        engine.pressButton(9);
+	        engine.pressButton(1);
+	        try {
+	            engine.join();
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
+}
