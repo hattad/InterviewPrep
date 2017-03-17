@@ -1,0 +1,71 @@
+import java.util.Set;
+import java.util.TreeSet;
+
+
+public class Elevator {
+	static int floors;
+	Set<Integer> requests;
+	int currentFloor;
+	int direction = 0;//0 indicates UP and 1 indicates DOWN
+	
+	public Elevator(int numFloors){
+		floors = numFloors;
+		currentFloor = 1;
+		requests = new TreeSet<Integer>();
+	}
+	
+	public void requestElevator(int floor)
+	{
+		requests.add(floor);
+	}
+	
+	public Integer gotoNext(){
+        Integer nextFloor = currentFloor;
+        switch(direction){
+        case 0:
+            for (Integer floor : requests) {
+                if(floor > nextFloor){
+                    nextFloor = floor;
+                    direction = 0;
+                    break;
+                }
+            }
+             
+            if(nextFloor == currentFloor){
+                for (Integer floor : requests) {
+                    if(floor < nextFloor){
+                        nextFloor = floor;
+                        direction = 1;
+                        break;
+                    }
+                }
+            }
+            break;
+        case 1:
+            for (Integer floor : requests) {
+                if(floor < nextFloor){
+                    nextFloor = floor;
+                    direction = 0;
+                    break;
+                }
+            }
+             
+            if(nextFloor == currentFloor){
+                for (Integer floor : requests) {
+                    if(floor > nextFloor){
+                        nextFloor = floor;
+                        direction = 1;
+                        break;
+                    }
+                }
+            }
+        }
+        requests.remove(nextFloor);
+        currentFloor = nextFloor;
+        return nextFloor;
+    }
+	
+	public int getElevatorFloor(){
+		return currentFloor;
+	}
+}
